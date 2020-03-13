@@ -18,5 +18,9 @@ AAsteroidGameGameMode::AAsteroidGameGameMode()
 
 void AAsteroidGameGameMode::EndGame()
 {
-	Destroy();
+	DisplayGameOver();
+}
+
+void AAsteroidGameGameMode::DisplayGameOver_Implementation()
+{
 }

@@ -14,6 +14,8 @@ public:
 
 	void EndGame();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Misc")
+	void DisplayGameOver();
 };
 
 

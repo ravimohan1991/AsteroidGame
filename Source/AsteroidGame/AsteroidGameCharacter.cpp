@@ -121,6 +121,6 @@ void AAsteroidGameCharacter::Die()
 	{
 		MyController->NotifyDead();
 	}
-	
+
 	Destroy();// Dying effects can be added here.
 }
