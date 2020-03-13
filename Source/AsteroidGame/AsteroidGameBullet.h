@@ -30,6 +30,6 @@ public:
 	FORCEINLINE class UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
 protected:
-	/** Override BeginPlay() for spawning purposes. */
+	/** Override BeginPlay() for registering hit events. */
 	virtual void BeginPlay() override;
 };

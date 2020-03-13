@@ -12,9 +12,14 @@ class AAsteroidGamePlayerController : public APlayerController
 public:
 	AAsteroidGamePlayerController();
 	void NotifyDead();
+	float GetScore() { return Score; }
+	int32 GetLivesLeft() { return LivesLeft; }
+	void IncrementScore( float Value ) { Score += Value; }
 
 private:
 	int32 LivesLeft;
+
+	float Score;
 };
 
 
