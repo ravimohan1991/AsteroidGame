@@ -16,11 +16,8 @@ class AAsteroidGameBullet : public AActor
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	class UProjectileMovementComponent* ProjectileMovement;
 
-	/** GameMode reference. */
-	//AShooterAIGameMode* GameMode;
-
 public:
-	AAsteroidGameBullet();
+	AAsteroidGameBullet(const FObjectInitializer& ObjectInitializer);
 
 	/** called when projectile hits something */
 	UFUNCTION()
@@ -34,5 +31,5 @@ public:
 
 protected:
 	/** Override BeginPlay() for spawning purposes. */
-	//void BeginPlay() override;
+	virtual void BeginPlay() override;
 };

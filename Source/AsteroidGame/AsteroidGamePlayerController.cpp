@@ -1,5 +1,3 @@
-// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
-
 #include "AsteroidGamePlayerController.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"

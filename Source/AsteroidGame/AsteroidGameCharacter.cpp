@@ -1,5 +1,3 @@
-// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
-
 #include "AsteroidGameCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
@@ -13,6 +11,9 @@
 #include "Engine/World.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "AsteroidGameBullet.h"
+#include "AsteroidGameGameMode.h"
+#include "EngineUtils.h"
+#include "Runtime/Engine/Classes/Camera/CameraActor.h"
 
 AAsteroidGameCharacter::AAsteroidGameCharacter()
 {
@@ -95,5 +96,34 @@ void AAsteroidGameCharacter::RotateRight(float Value)
 	if ((Controller != NULL) && (Value != 0.0f))
 	{
 		AddActorWorldRotation(FRotator(0, Value, 0));
+	}
+}
+
+float AAsteroidGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Taking damage"));
+	float TDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	Die();// since this is not health based character
+	return TDamage;
+}
+
+void AAsteroidGameCharacter::Die()
+{
+	APlayerController* MyController = nullptr;
+	if (Controller && Controller->GetPawn() == this)
+		MyController = Cast<APlayerController>(Controller);
+	
+	AAsteroidGameGameMode* GameMode = GetWorld()->GetAuthGameMode<AAsteroidGameGameMode>();
+	if (GameMode && MyController)
+	{
+		GameMode->RestartPlayer(MyController);
+		ACameraActor* MyCamera = nullptr;
+		for (TActorIterator<ACameraActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+		{
+			MyCamera = *ActorItr;
+			break;
+		}
+		if(MyCamera)
+			MyController->SetViewTargetWithBlend(MyCamera);
 	}
 }
