@@ -12,12 +12,8 @@ class AAsteroidGameGameMode : public AGameModeBase
 public:
 	AAsteroidGameGameMode();
 
-	/** Called when bullet hits the player. */
-	UFUNCTION(BlueprintCallable, category = Gameplay)
-	void PlayerDied(AController* NewPlayer);
+	void EndGame();
 
-private:
-	int PlayerLives;
 };
 
 

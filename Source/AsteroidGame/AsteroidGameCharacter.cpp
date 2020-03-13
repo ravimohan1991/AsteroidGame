@@ -12,8 +12,7 @@
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "AsteroidGameBullet.h"
 #include "AsteroidGameGameMode.h"
-#include "EngineUtils.h"
-#include "Runtime/Engine/Classes/Camera/CameraActor.h"
+#include "AsteroidGamePlayerController.h"
 
 AAsteroidGameCharacter::AAsteroidGameCharacter()
 {
@@ -101,7 +100,6 @@ void AAsteroidGameCharacter::RotateRight(float Value)
 
 float AAsteroidGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Taking damage"));
 	float TDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	Die();// since this is not health based character
 	return TDamage;
@@ -109,21 +107,20 @@ float AAsteroidGameCharacter::TakeDamage(float Damage, FDamageEvent const& Damag
 
 void AAsteroidGameCharacter::Die()
 {
-	APlayerController* MyController = nullptr;
-	if (Controller && Controller->GetPawn() == this)
-		MyController = Cast<APlayerController>(Controller);
+	AAsteroidGamePlayerController* MyController = nullptr;
 	
-	AAsteroidGameGameMode* GameMode = GetWorld()->GetAuthGameMode<AAsteroidGameGameMode>();
-	if (GameMode && MyController)
+	if (Controller && Controller->GetPawn() == this)
 	{
-		GameMode->RestartPlayer(MyController);
-		ACameraActor* MyCamera = nullptr;
-		for (TActorIterator<ACameraActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
-		{
-			MyCamera = *ActorItr;
-			break;
-		}
-		if(MyCamera)
-			MyController->SetViewTargetWithBlend(MyCamera);
+		MyController = Cast<AAsteroidGamePlayerController>(Controller);
 	}
+	
+	// Unpossess
+	DetachFromControllerPendingDestroy();
+	
+	if (MyController)
+	{
+		MyController->NotifyDead();
+	}
+	
+	Destroy();// Dying effects can be added here.
 }

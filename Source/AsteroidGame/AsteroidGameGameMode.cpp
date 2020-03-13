@@ -14,15 +14,9 @@ AAsteroidGameGameMode::AAsteroidGameGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
-
-	PlayerLives = 3;
 }
 
-void AAsteroidGameGameMode::PlayerDied(AController* NewPlayer)
+void AAsteroidGameGameMode::EndGame()
 {
-	PlayerLives--;
-	// May want to incorporate bullet projectile destroy logic here.
-	if (PlayerLives > 0) {
-		//RestartPlayer(NewPlayer);
-	}
+	Destroy();
 }
