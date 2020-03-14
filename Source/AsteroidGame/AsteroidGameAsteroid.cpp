@@ -4,6 +4,7 @@
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "GameFramework/DamageType.h"
 #include "Kismet/GameplayStatics.h"
+#include "AsteroidGamePlayerController.h"
 
 AAsteroidGameAsteroid::AAsteroidGameAsteroid()
 {
@@ -13,6 +14,15 @@ AAsteroidGameAsteroid::AAsteroidGameAsteroid()
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 
 	RootComponent = CollisionComp;
+
+	// Use a ProjectileMovementComponent to govern this asteroid's movement
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileAsteroidComp"));
+	ProjectileMovement->UpdatedComponent = CollisionComp;
+	ProjectileMovement->InitialSpeed = 2000.f;
+	ProjectileMovement->MaxSpeed = 2000.f;
+	ProjectileMovement->bRotationFollowsVelocity = true;
+	ProjectileMovement->bShouldBounce = false;
+	ProjectileMovement->ProjectileGravityScale = 0;
 }
 
 // Called when the game starts or when spawned
@@ -24,6 +34,29 @@ void AAsteroidGameAsteroid::BeginPlay()
 
 void AAsteroidGameAsteroid::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Hitting %s"), *OtherActor->GetName());
+	// Hitting spaceship or other asteroids
+	FVector HitFromDirection = Hit.Location - GetActorLocation();
+	if (!HitFromDirection.IsNearlyZero())
+	{
+		HitFromDirection.Normalize();
+	}
+	else
+	{
+		HitFromDirection = GetActorRotation().Vector();
+	}
+
+	UGameplayStatics::ApplyPointDamage(OtherActor, 100, HitFromDirection, Hit, GetInstigatorController(), this, UDamageType::StaticClass());
 }
 
+float AAsteroidGameAsteroid::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("EventInstigator: %s,  DamageCauser: %s"), *EventInstigator->GetName(), *DamageCauser->GetName());
+	
+	AAsteroidGamePlayerController* MyController = Cast<AAsteroidGamePlayerController>(EventInstigator);
+	if (MyController)
+	{
+		MyController->IncrementScore(ScoreReward);
+	}
+	Destroy();// not health based so we destory here.
+	return Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+}

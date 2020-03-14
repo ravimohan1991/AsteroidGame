@@ -17,6 +17,10 @@ class ASTEROIDGAME_API AAsteroidGameAsteroid : public AActor
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	class UProjectileMovementComponent* ProjectileMovement;
 
+	/** Score given for hitting this projectile.*/
+	UPROPERTY(EditAnywhere, Category = "Gameplay")
+	float ScoreReward;
+
 public:	
 	// Sets default values for this actor's properties
 	AAsteroidGameAsteroid();
@@ -24,6 +28,11 @@ public:
 	/** called when asteroid hits something */
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	/**
+	* Take Damage override.
+	*/
+	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:
 	// Called when the game starts or when spawned
