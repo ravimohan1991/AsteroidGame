@@ -16,10 +16,17 @@ public:
 	int32 GetLivesLeft() { return LivesLeft; }
 	void IncrementScore( float Value ) { Score += Value; }
 
+	UFUNCTION()
+	void ReSpawn();
+
 private:
 	int32 LivesLeft;
-
 	float Score;
+
+	FTimerHandle ReSpawnTimerHandle;
+
+protected:
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 };
 
 

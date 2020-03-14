@@ -25,7 +25,8 @@ void AAsteroidGamePlayerController::NotifyDead()
 
 	if (LivesLeft > 1)
 	{
-		GameMode->RestartPlayer(this);
+		//GameMode->RestartPlayer(this);
+		GetWorld()->GetTimerManager().SetTimer(ReSpawnTimerHandle, this, &AAsteroidGamePlayerController::ReSpawn, 1.0f, false);
 		LivesLeft--;
 	}
 	else
@@ -39,4 +40,24 @@ void AAsteroidGamePlayerController::NotifyDead()
 		SetViewTargetWithBlend(*ActorItr);
 		break;
 	}
+}
+
+void AAsteroidGamePlayerController::ReSpawn()
+{
+	AAsteroidGameGameMode* GameMode = GetWorld()->GetAuthGameMode<AAsteroidGameGameMode>();
+
+	if(GameMode)
+		GameMode->RestartPlayer(this);
+
+	// Set the view as per camera
+	for (TActorIterator<ACameraActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	{
+		SetViewTargetWithBlend(*ActorItr);
+		break;
+	}
+}
+
+void AAsteroidGamePlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	GetWorld()->GetTimerManager().ClearTimer(ReSpawnTimerHandle);
 }
