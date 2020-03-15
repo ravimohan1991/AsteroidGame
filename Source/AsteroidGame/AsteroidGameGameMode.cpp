@@ -16,6 +16,15 @@ AAsteroidGameGameMode::AAsteroidGameGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+	AsteroidsSpawnPoints.Add(FVector(590, -1770, 240));
+	AsteroidsSpawnPoints.Add(FVector(-810, -1770, 240));
+	AsteroidsSpawnPoints.Add(FVector(-1350, -1010, 240));
+	AsteroidsSpawnPoints.Add(FVector(-1350, 1250, 240));
+	AsteroidsSpawnPoints.Add(FVector(-810, 1730, 240));
+	AsteroidsSpawnPoints.Add(FVector(590, 1730, 240));
+	AsteroidsSpawnPoints.Add(FVector(990, 1310, 240));
+	AsteroidsSpawnPoints.Add(FVector(990, -1090, 240));
 }
 
 void AAsteroidGameGameMode::EndGame()
@@ -39,4 +48,24 @@ void AAsteroidGameGameMode::BeginPlay()
 		// spawn the asteroid projectile
 		World->SpawnActor<AAsteroidGameAsteroid>(AsteroidClass, FVector(-350, -540, 270), FRotator(0, 0, 0), ActorSpawnParams);
 	}*/
+	GetWorld()->GetTimerManager().SetTimer(AsteroidSpawnerHandle, this, &AAsteroidGameGameMode::SpawnAsteroid, AsteroidSpawnLoopTime, true);
+}
+
+void AAsteroidGameGameMode::SpawnAsteroid()
+{
+	UWorld* const World = GetWorld();
+	if (World != NULL)
+	{
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+		// spawn the asteroid projectile
+		World->SpawnActor<AAsteroidGameAsteroid>(Asteroids.GetData()[FMath::RandRange(int32(0), int32(Asteroids.Num() - 1))], AsteroidsSpawnPoints.GetData()[FMath::RandRange(int32(0), int32(AsteroidsSpawnPoints.Num() - 1))], FRotator(0, 0, 0), ActorSpawnParams);
+	}
+}
+
+void AAsteroidGameGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	GetWorld()->GetTimerManager().ClearTimer(AsteroidSpawnerHandle);
 }
