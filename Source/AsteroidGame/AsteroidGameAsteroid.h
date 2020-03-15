@@ -13,6 +13,9 @@ class ASTEROIDGAME_API AAsteroidGameAsteroid : public AActor
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 	class USphereComponent* CollisionComp;
 
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* AsteroidMeshComp;
+
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	class UProjectileMovementComponent* ProjectileMovement;

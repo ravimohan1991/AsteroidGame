@@ -16,6 +16,12 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Misc")
 	void DisplayGameOver();
+
+	UPROPERTY(EditAnywhere, Category = "Misc")
+	TSubclassOf<class AAsteroidGameAsteroid> AsteroidClass;
+protected:
+
+	virtual void BeginPlay() override;
 };
 
 

@@ -8,13 +8,9 @@
 
 AAsteroidGameAsteroid::AAsteroidGameAsteroid()
 {
-	// Use a sphere as a simple collision representation
-	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	//CollisionComp->InitSphereRadius(5.0f);
-	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
-
-	RootComponent = CollisionComp;
-
+	UStaticMeshComponent* AsteroidMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AsteroidMeshComp"));
+	RootComponent = AsteroidMeshComp;// Setting this way seems to work with projectile movement component
+		
 	// Use a ProjectileMovementComponent to govern this asteroid's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileAsteroidComp"));
 	ProjectileMovement->UpdatedComponent = CollisionComp;
@@ -23,6 +19,11 @@ AAsteroidGameAsteroid::AAsteroidGameAsteroid()
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = false;
 	ProjectileMovement->ProjectileGravityScale = 0;
+
+	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
+	//CollisionComp->OnComponentHit.AddDynamic(this, &AAsteroidGameAsteroid::OnHit);
+	//RootComponent = CollisionComp;
 }
 
 // Called when the game starts or when spawned
@@ -46,6 +47,7 @@ void AAsteroidGameAsteroid::OnHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 	}
 
 	UGameplayStatics::ApplyPointDamage(OtherActor, 100, HitFromDirection, Hit, GetInstigatorController(), this, UDamageType::StaticClass());
+	UE_LOG(LogTemp, Warning, TEXT("Applying point damage to %s"), *OtherActor->GetName());
 }
 
 float AAsteroidGameAsteroid::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

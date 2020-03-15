@@ -2,6 +2,8 @@
 #include "AsteroidGamePlayerController.h"
 #include "AsteroidGameCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Engine/World.h"
+#include "AsteroidGameAsteroid.h"
 
 AAsteroidGameGameMode::AAsteroidGameGameMode()
 {
@@ -23,4 +25,18 @@ void AAsteroidGameGameMode::EndGame()
 
 void AAsteroidGameGameMode::DisplayGameOver_Implementation()
 {
+}
+
+void AAsteroidGameGameMode::BeginPlay()
+{
+	/*UWorld* const World = GetWorld();
+	if (World != NULL)
+	{
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+		// spawn the asteroid projectile
+		World->SpawnActor<AAsteroidGameAsteroid>(AsteroidClass, FVector(-350, -540, 270), FRotator(0, 0, 0), ActorSpawnParams);
+	}*/
 }
