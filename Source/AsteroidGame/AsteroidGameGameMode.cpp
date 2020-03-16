@@ -38,17 +38,11 @@ void AAsteroidGameGameMode::DisplayGameOver_Implementation()
 
 void AAsteroidGameGameMode::BeginPlay()
 {
-	/*UWorld* const World = GetWorld();
-	if (World != NULL)
+	UWorld* World = GetWorld();
+	if (World)
 	{
-		//Set Spawn Collision Handling Override
-		FActorSpawnParameters ActorSpawnParams;
-		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-		// spawn the asteroid projectile
-		World->SpawnActor<AAsteroidGameAsteroid>(AsteroidClass, FVector(-350, -540, 270), FRotator(0, 0, 0), ActorSpawnParams);
-	}*/
-	GetWorld()->GetTimerManager().SetTimer(AsteroidSpawnerHandle, this, &AAsteroidGameGameMode::SpawnAsteroid, AsteroidSpawnLoopTime, true);
+		World->GetTimerManager().SetTimer(AsteroidSpawnerHandle, this, &AAsteroidGameGameMode::SpawnAsteroid, AsteroidSpawnLoopTime, true);
+	}
 }
 
 void AAsteroidGameGameMode::SpawnAsteroid()
@@ -67,5 +61,9 @@ void AAsteroidGameGameMode::SpawnAsteroid()
 
 void AAsteroidGameGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	GetWorld()->GetTimerManager().ClearTimer(AsteroidSpawnerHandle);
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		World->GetTimerManager().ClearTimer(AsteroidSpawnerHandle);
+	}
 }
