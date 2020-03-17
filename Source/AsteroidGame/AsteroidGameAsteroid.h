@@ -2,7 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+//#include "DestructibleComponent.h"
 #include "AsteroidGameAsteroid.generated.h"
+
+//class UDestructibleComponent;
 
 UCLASS()
 class ASTEROIDGAME_API AAsteroidGameAsteroid : public AActor
@@ -13,8 +16,8 @@ class ASTEROIDGAME_API AAsteroidGameAsteroid : public AActor
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 	class USphereComponent* CollisionComp;
 
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* AsteroidMeshComp;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	//class UDestructibleComponent* AsteroidDestComp;
 
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))

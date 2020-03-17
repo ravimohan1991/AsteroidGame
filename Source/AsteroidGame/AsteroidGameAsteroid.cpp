@@ -8,8 +8,11 @@
 
 AAsteroidGameAsteroid::AAsteroidGameAsteroid()
 {
-	AsteroidMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AsteroidMeshComp"));
-	RootComponent = AsteroidMeshComp;// Setting this way seems to work with projectile movement component
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SeceneComponent"));
+	
+	/*AsteroidDestComp = CreateDefaultSubobject<UDestructibleComponent>("DestructibleComponent");// Setting this way seems to work with projectile movement component
+	AsteroidDestComp->SetupAttachement(RootComponent);
+	AsteroidDestComp->SetNotifyRigidBodyCollision(true);*/
 
 	// Use a ProjectileMovementComponent to govern this asteroid's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileAsteroidComp"));
@@ -20,7 +23,7 @@ AAsteroidGameAsteroid::AAsteroidGameAsteroid()
 
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
-	CollisionComp->SetupAttachment(AsteroidMeshComp);     //AttachToComponent(AsteroidMeshComp, FAttachmentTransformRules::KeepWorldTransform);
+	CollisionComp->SetupAttachment(RootComponent);     //AttachToComponent(AsteroidMeshComp, FAttachmentTransformRules::KeepWorldTransform);
 	//CollisionComp->OnComponentHit.AddDynamic(this, &AAsteroidGameAsteroid::OnHit);
 	//RootComponent = CollisionComp;
 }
