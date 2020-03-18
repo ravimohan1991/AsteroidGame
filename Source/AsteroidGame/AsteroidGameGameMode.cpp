@@ -4,6 +4,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Engine/World.h"
 #include "AsteroidGameAsteroid.h"
+#include "EngineUtils.h"
 
 AAsteroidGameGameMode::AAsteroidGameGameMode()
 {
@@ -38,10 +39,10 @@ void AAsteroidGameGameMode::DisplayGameOver_Implementation()
 
 void AAsteroidGameGameMode::BeginPlay()
 {
-	UWorld* World = GetWorld();
-	if (World)
+	UWorld* MyWorld = GetWorld();
+	if (MyWorld)
 	{
-		World->GetTimerManager().SetTimer(AsteroidSpawnerHandle, this, &AAsteroidGameGameMode::SpawnAsteroid, AsteroidSpawnLoopTime, true);
+		MyWorld->GetTimerManager().SetTimer(AsteroidSpawnerHandle, this, &AAsteroidGameGameMode::SpawnAsteroid, AsteroidSpawnLoopTime, true);
 	}
 }
 
@@ -61,9 +62,9 @@ void AAsteroidGameGameMode::SpawnAsteroid()
 
 void AAsteroidGameGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	UWorld* World = GetWorld();
-	if (World)
+	UWorld* MyWorld = GetWorld();
+	if (MyWorld)
 	{
-		World->GetTimerManager().ClearTimer(AsteroidSpawnerHandle);
+		MyWorld->GetTimerManager().ClearTimer(AsteroidSpawnerHandle);
 	}
 }
