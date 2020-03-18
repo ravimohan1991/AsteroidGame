@@ -59,6 +59,11 @@ float AAsteroidGameAsteroid::TakeDamage(float Damage, FDamageEvent const& Damage
 	{
 		MyController->IncrementScore(ScoreReward);
 	}
+	SpawnSmallerAsteroids();
 	Destroy();// not health based so we destory here.
 	return Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+}
+
+void AAsteroidGameAsteroid::SpawnSmallerAsteroids_Implementation()
+{
 }

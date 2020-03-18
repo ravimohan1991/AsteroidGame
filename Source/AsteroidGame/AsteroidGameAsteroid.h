@@ -37,6 +37,9 @@ public:
 	*/
 	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Gameplay")
+	void SpawnSmallerAsteroids();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
