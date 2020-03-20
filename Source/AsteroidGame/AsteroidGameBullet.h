@@ -19,7 +19,17 @@ class AAsteroidGameBullet : public AActor
 public:
 	AAsteroidGameBullet(const FObjectInitializer& ObjectInitializer);
 
-	/** called when projectile hits something */
+	/**
+	 * Called when bullet hits an Actor
+	 *
+	 * Useful to detect the collision events with asteroids and spaceship.
+	 *
+	 * @param HitComp Pointer to the primitivecomponent of the asteroid
+	 * @param OtherActor Pointer to the Actor hitting the asteroid
+	 * @param OtherComp Pointer to the primitivecomponent of the Other Actor
+	 * @param NormalImpulse
+	 * @param Hit Structure containing information about one hit of a trace, such as point of impact and surface normal at that point.
+	 */
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 

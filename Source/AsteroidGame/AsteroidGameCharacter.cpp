@@ -30,16 +30,7 @@ AAsteroidGameCharacter::AAsteroidGameCharacter()
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
-	// Activate ticking in order to update the cursor every frame.
-	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.bStartWithTickEnabled = true;
-
 	GunOffset = FVector(80.0f, 0.0f, 0.0f);
-}
-
-void AAsteroidGameCharacter::Tick(float DeltaSeconds)
-{
-    Super::Tick(DeltaSeconds);
 }
 
 void AAsteroidGameCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)

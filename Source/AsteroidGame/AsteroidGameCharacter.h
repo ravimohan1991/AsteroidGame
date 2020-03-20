@@ -12,21 +12,28 @@ class AAsteroidGameCharacter : public ACharacter
 public:
 	AAsteroidGameCharacter();
 
-	// Called every frame.
-	virtual void Tick(float DeltaSeconds) override;
-
-	// For moving forward.
+	/**
+	* Function for moving forward the spaceship
+	*/
 	UFUNCTION()
 	void MoveForward(float Value);
 
-	// For rotating
+	/**
+	* Function for rotating the spaceship
+	*/
 	UFUNCTION()
 	void RotateRight(float Value);
 
+	/**
+	* Fire logic
+	*/
 	UFUNCTION()
 	void OnFire();
 
 public:
+	/**
+	* Function to bind various ufunctions to the appropriate keys.
+	*/
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	/** Projectile class. */
@@ -39,9 +46,20 @@ public:
 
 	/**
 	* Take Damage override.
+	*
+	* @see https://www.unrealengine.com/blog/damage-in-ue4
+	* @param DamageAmount How much damage to apply
+	* @param DamageEvent Data package that fully describes the damage received.
+	* @param EventInstigator The Controller responsible for the damage.
+	* @param DamageCauser The Actor that directly caused the damage (e.g. the projectile that exploded, the rock that landed on you)
+	* @return The amount of damage actually applied.
 	*/
 	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
+	/**
+	* For killing the spaceship character. Calls 
+	* AAsteroidGamePlayerController::NotifyDead
+	*/
 	void Die();
 
 private:

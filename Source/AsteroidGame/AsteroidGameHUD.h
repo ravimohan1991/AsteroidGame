@@ -13,6 +13,9 @@ public:
 	/** Primary draw call for the HUD */
 	virtual void DrawHUD() override;
 	
+	/**
+	* The font of the text diaplayed on the HUD
+	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
 	UFont* TextFont;
 };
